@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        flatDir dirs: 'D:\\Codes\\csci2020u_TonyLing\\proguard6.2.2\\lib'
+    }
+
+    dependencies {
+        classpath ':proguard:'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+task (minify, dependsOn: 'jar', type: proguard.gradle.ProGuardTask) {
+    configuration 'proguard.cfg'
+    injars 'build/libs/lab03-1.0.jar'
+    outjars 'build/libs/lab03-1.1.jar'
+}
+
+jar {
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+    archiveBaseName = 'lab03'
+    archiveVersion = '1.0'
+    manifest {
+        attributes(
+            'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+            'Main-Class': 'csci2020u.lab03.CSVDemo'
+        )
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-csv:1.8'
+}
+
+application {
+    mainClassName = 'csci2020u.lab03.CSVDemo'
+}
