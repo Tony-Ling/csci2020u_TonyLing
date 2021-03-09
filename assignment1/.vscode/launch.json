@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch spamDetector",
+            "request": "launch",
+            "mainClass": "csci2020u.assignment1.spamDetector",
+            "projectName": "assignment1_ed22c82f"
+        },
+        {
+            "type": "java",
+            "name": "Launch WordCounter",
+            "request": "launch",
+            "mainClass": "csci2020u.assignment1.WordCounter",
+            "projectName": "assignment1_ed22c82f"
+        },
+        {
+            "type": "java",
             "name": "Launch test",
             "request": "launch",
             "mainClass": "csci2020u.assignment1.test",
