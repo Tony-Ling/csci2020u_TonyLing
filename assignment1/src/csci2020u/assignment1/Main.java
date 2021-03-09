@@ -84,7 +84,7 @@ public class Main extends Application {
         
         return 0.0000;
     }
-
+    
     public static void main(String[] args) {
         launch(args);
     }
