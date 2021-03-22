@@ -1,5 +1,4 @@
 {
-    "git.ignoreLimitWarning": true,
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "d:\\Codes\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
