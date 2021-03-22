@@ -1,5 +1,7 @@
 package csci2020u.lab08;
 
+import java.io.*;
+import java.util.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
@@ -9,20 +11,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
-
 public class Main extends Application {
-    
+
+    public static File currentFilename = new File("src/csci2020u/lab08/StudentRecord.csv");
+    public TableView<StudentRecord> tableView = new TableView<>();
+
 	@Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Lab 08 Solutions");
-
-        TableView<StudentRecord> tableView = new TableView<>();
 
         TableColumn SIDCol = new TableColumn("SID");
         SIDCol.setCellValueFactory(new PropertyValueFactory<StudentRecord, String>("SID"));
@@ -54,19 +57,37 @@ public class Main extends Application {
         MenuItem exitItem = new MenuItem("Exit");
 
         newItem.setOnAction(e -> {
-            System.out.println("test");
+            tableView.getItems().clear();
         });
 
         openItem.setOnAction(e -> {
-            System.out.println("test");
+            try {
+                load();
+            } catch(Exception e1) {
+                e1.printStackTrace();
+            }
         });
 
         saveItem.setOnAction(e -> {
-            System.out.println("test");
+            try {
+                save(currentFilename);
+            } catch(Exception e1) {
+                e1.printStackTrace();
+            }
         });
 
         saveAsItem.setOnAction(e -> {
-            System.out.println("test");
+            FileChooser fc = new FileChooser();
+            File newFile = fc.showSaveDialog(primaryStage);
+            if(!newFile.getName().contains(".")) {
+                newFile = new File(newFile.getAbsolutePath() + ".csv");
+            }
+            currentFilename = newFile;
+            try {
+                save(currentFilename);
+            } catch(Exception e1) {
+                e1.printStackTrace();
+            }
         });
 
         exitItem.setOnAction(e -> {
@@ -107,9 +128,7 @@ public class Main extends Application {
         gp.add(add, 1, 2);
 
         menu.getItems().addAll(newItem, openItem, saveItem, saveAsItem, exitItem);
-
         MenuBar mb = new MenuBar();
-
         mb.getMenus().add(menu);
         
         VBox vbox = new VBox();
@@ -118,6 +137,39 @@ public class Main extends Application {
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void save(File file) throws Exception {
+        Writer writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            for (StudentRecord sr : DataSource.marks) {
+                String text = sr.getSID() + "," + sr.getAssignment() + "," + sr.getMidTerm()
+                + "," + sr.getFinalExam() + "\n";
+
+                writer.write(text);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            writer.flush();
+            writer.close();
+        }
+    }
+
+    private void load() throws Exception {
+        try {
+            Scanner scanner = new Scanner(currentFilename);
+            while (scanner.hasNext()) {
+                String data = scanner.next();
+                String[] values = data.split(",");
+                tableView.setItems(DataSource.addMarks(values[0], Float.parseFloat(values[1]),
+                Float.parseFloat(values[2]), Float.parseFloat(values[3])));
+            }
+            scanner.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
