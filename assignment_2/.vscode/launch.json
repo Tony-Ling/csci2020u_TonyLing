@@ -6,16 +6,30 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Server",
+            "request": "launch",
+            "mainClass": "csci2020u.assignment_2.Server",
+            "projectName": "assignment_2_b7364375"
+        },
+        {
+            "type": "java",
+            "name": "Launch Client",
+            "request": "launch",
+            "mainClass": "csci2020u.assignment_2.Client.Client",
+            "projectName": "assignment_2_b7364375"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"
         },
         {
             "type": "java",
-            "name": "Launch Main",
+            "name": "Launch Client",
             "request": "launch",
             "vmArgs": "--module-path D:\\Codes\\javafx-sdk-11.0.2\\lib --add-modules javafx.controls,javafx.fxml",
-            "mainClass": "csci2020u.assignment_2.Main",
+            "mainClass": "csci2020u.assignment_2.Client",
             "projectName": "assignment_2_b7364375"
         }
     ]
