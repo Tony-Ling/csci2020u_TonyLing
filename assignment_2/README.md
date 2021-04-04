@@ -1,14 +1,18 @@
-## Getting Started
+## Project Information
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This javafx project is used to share files between the user from their local storage to the remote storage by downloading and uploading the selected file.
 
-## Folder Structure
+- 'image': ![alt text](https://i.gyazo.com/6a55dac9a226346cbd33f220a05cf91e.png)
+
+
+## Imporvements
 
 The workspace contains two folders by default, where:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+Some improvesments made in the UI is the creations of more functional buttons to open, delete, and clear the files from the local storage.
 
-## Dependency Management
+## How to run
 
-The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-pack/blob/master/release-notes/v0.9.0.md#work-with-jar-files-directly).
+- '1': Compile the server.java file to gain access to the server
+- '2': execute the client.java file
+- '3': Enjoy!
