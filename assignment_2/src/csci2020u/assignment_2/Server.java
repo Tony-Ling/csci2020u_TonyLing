@@ -1,13 +1,25 @@
+/**
+ * Tony Ling
+ * STU #: 100747421
+ * 
+ * CSCI2020 Assignment 2
+ * 
+ */
+
 package csci2020u.assignment_2;
 
 import java.io.*;
 import java.net.*;
 
+/**
+ * This class file contains the socket server and the threads which is 
+ * used to excute the ClientHandler class.
+ */
 public class Server {
 
     private static ServerSocket serverSocket;
     private static Socket clientSocket = null;
-    private final static int socketPort = 100747421;
+    private final static int socketPort = 1212;
     public static void main(String[] args) throws IOException {
 
         try {
@@ -24,7 +36,9 @@ public class Server {
                 clientSocket = serverSocket.accept();
                 System.out.println("Connection with new Client: " + clientSocket);
 
-                Thread t = new Thread(new ClientHandler(clientSocket));
+                ClientHandler ch = new ClientHandler(clientSocket);
+
+                Thread t = new Thread(ch);
 
                 t.start();
 

@@ -1,3 +1,11 @@
+/**
+ * Tony Ling
+ * STU #: 100747421
+ * 
+ * CSCI2020 Assignment 2
+ * 
+ */
+
 package csci2020u.assignment_2;
 
 import java.util.*;
@@ -6,6 +14,7 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
@@ -14,10 +23,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This class file is the main executable file that is used to display
+ * the javafx UI and to upload the user's selected files from their 
+ * local storage to the remote server or download files from the remote
+ * server to the user's local storage.
+ */
 public class Client extends Application {
 
     final private String fileDIR = "src/csci2020u/assignment_2/shared/";
+    public static ListView<String> serverView = new ListView<String>();
+    public static ListView<String> localView = new ListView<String>();
+    public static boolean selectedDownloadButton = false;
 
+    /**
+     * This is the start function which contains all of the javafx functions
+     * and the UI and their functionalities. The UI contrains in this class
+     * are buttons, various panes and labels.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("File Sharer v1.0");
@@ -27,22 +50,32 @@ public class Client extends Application {
         Button uploadButton = new Button("Upload");
         Button openFileButton = new Button("Open File");
         Button deleteFileButton = new Button("Delete FIle");
+        Button clearFileListButton = new Button("Clear Local List");
 
-        ListView<String> serverView = new ListView<String>();
-        ListView<String> localView = new ListView<String>();    
-
+        // The function of this button is to display the files to listview.
         dirButton.setOnAction(e -> {
-            System.out.println("testing 1");
+            addFilesToList();
         });
 
+        // The function of this button is to download the files from the server
+        // to the local file storage (in this case, the folder is called "shared").
         downloadButton.setOnAction(e -> {
-            System.out.println("testing 2");
+            selectedDownloadButton = true;
+            ClientHandler.downloadFile();
         });
 
+        // The function of this button is to upload the selected file to the server
+        // from the local file storage.
         uploadButton.setOnAction(e -> {
-            System.out.println("testing 3");
+            ObservableList deleteFile = localView.getSelectionModel().getSelectedItems();
+            
+            for(Object o : deleteFile) {
+                ClientHandler.uploadFile(o.toString());
+            }
         });
 
+        // The function of this button is to open the file's content from the local
+        // stoage and display the content in a new scene.
         openFileButton.setOnAction(e -> {
             ObservableList viewFile = localView.getSelectionModel().getSelectedItems();
             
@@ -51,6 +84,7 @@ public class Client extends Application {
             }
         });
 
+        // The function of this button is to delete the selected file from the local storage.
         deleteFileButton.setOnAction(e -> {
             ObservableList deleteFile = localView.getSelectionModel().getSelectedItems();
             
@@ -59,6 +93,44 @@ public class Client extends Application {
             }
         });
 
+        // The function of this button is to clear the content from the localview.
+        clearFileListButton.setOnAction(e -> {
+            localView.getItems().clear();
+        });
+
+        addFilesToList();
+
+        VBox vb = new VBox();
+        VBox serverVB = new VBox();
+        serverVB.setSpacing(10);
+        VBox localVB = new VBox();
+        HBox hb = new HBox();
+        GridPane gp = new GridPane();
+
+        Label serverLabel = new Label("Server File List: ");
+        Label localLabel = new Label("Local File List: ");
+
+        serverVB.getChildren().addAll(serverLabel, serverView);
+        localVB.getChildren().addAll(localLabel, localView);
+
+        gp.add(dirButton, 0, 0);
+        gp.add(downloadButton, 1, 0);
+        gp.add(uploadButton, 2, 0);
+        gp.add(openFileButton, 3, 0);
+        gp.add(deleteFileButton, 4, 0);
+        gp.add(clearFileListButton, 5, 0);
+
+        hb.getChildren().addAll(serverVB, localVB);
+        vb.getChildren().addAll(gp, hb);
+
+        Scene scene = new Scene(vb);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    // The function addFilesToList() is to read a folder and display the file names
+    // into the local listview.
+    public void addFilesToList() {
         File DIR = new File(fileDIR);
         File[] listOfFiles = DIR.listFiles();
 
@@ -67,25 +139,10 @@ public class Client extends Application {
                 localView.getItems().add(file.getName());
             }
         }
-
-        VBox vb = new VBox();
-        HBox hb = new HBox();
-        GridPane gp = new GridPane();
-
-        gp.add(dirButton, 0, 0);
-        gp.add(downloadButton, 1, 0);
-        gp.add(uploadButton, 2, 0);
-        gp.add(openFileButton, 3, 0);
-        gp.add(deleteFileButton, 4, 0);
-
-        hb.getChildren().addAll(serverView, localView);
-        vb.getChildren().addAll(gp, hb);
-
-        Scene scene = new Scene(vb);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
+    // The function readFile(String file) is to take a file name as input and
+    // read through the file's content and print the content into another scene.
     public void readFile(String file) {
         List<String> read = new ArrayList<String>();
         String line;
@@ -122,6 +179,7 @@ public class Client extends Application {
         viewFile.show();
     }
 
+    // The function deleteFile(String file) is to delete the selected file from the localview
     public void deleteFile(String file) {
         File delFile = new File(fileDIR + file);
         if(delFile.delete()) {
@@ -129,9 +187,10 @@ public class Client extends Application {
         } else {
             System.out.println("Failed");
         }
+        localView.getItems().clear();
+        addFilesToList();
     }
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
