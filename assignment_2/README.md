@@ -2,7 +2,7 @@
 
 This javafx project is used to share files between the user from their local storage to the remote storage by downloading and uploading the selected file.
 
-- 'image': ![alt text](https://i.gyazo.com/6a55dac9a226346cbd33f220a05cf91e.png)
+![alt text](https://i.gyazo.com/6a55dac9a226346cbd33f220a05cf91e.png)
 
 
 ## Imporvements
