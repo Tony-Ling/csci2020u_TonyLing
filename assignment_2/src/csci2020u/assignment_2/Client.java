@@ -99,6 +99,8 @@ public class Client extends Application {
         });
 
         addFilesToList();
+        serverView.getItems().add("test1.txt");
+        serverView.getItems().add("test2.csv");
 
         VBox vb = new VBox();
         VBox serverVB = new VBox();
